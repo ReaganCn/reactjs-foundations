@@ -1,0 +1,91 @@
+import React, {Component} from "react"
+
+/**
+ * Challenge: Wire up the partially-finished travel form so that it works!
+ * Remember to use the concept of controlled forms
+ * https://reactjs.org/docs/forms.html
+ * 
+ * All information should be populating the text below the form in real-time
+ * as you're filling it out
+ * 
+ * This exercise is adapted from the V School curriculum on vanilla JS forms:
+ * https://coursework.vschool.io/travel-form/
+ * 
+ * All of our challenges and learning resources are open for the public
+ * to play around with and learn from at https://coursework.vschool.io
+ */
+
+class App extends Component {
+    constructor() {
+        super()
+        this.state = {
+            firstName: "",
+            lastName: "",
+            age: "",
+            gender: "",
+            location: "",
+            restrictions: ""
+        }
+    }
+ 
+    handleChange(event){
+        let name = event.target.name
+        let value = event.target.value
+        
+        this.setState ({
+            [name] : value
+        })
+    }
+    
+    render() {
+        return (
+            <main>
+                <form>
+                    <input type = "text" name = "firstName" value ={this.state.firstName} placeholder="First Name"  onChange ={this.handleChange.bind(this)}/><br />
+                    <input type = "text" name = "lastName" value ={this.state.lastName} placeholder="Last Name" onChange ={this.handleChange.bind(this)}/><br />
+                    <input type = "number" name = "age" value ={this.state.age} placeholder="Age" onChange ={this.handleChange.bind(this)}/><br />
+                    
+                    {/* Create radio buttons for gender here */}
+                    <h2>Gender</h2>
+                
+                    <input type="radio" value="male" name = "gender" onChange ={this.handleChange.bind(this)}/> Male <br />
+                    <input type="radio" value="female" name="gender" onChange ={this.handleChange.bind(this)}/> Female
+                    {/* Create select box for location here */}
+                    <br />
+                    <h2>Location</h2>
+                    
+                    <select value ={this.state.location} onChange ={this.handleChange.bind(this)} name="location"> 
+                    <option value=""></option>
+                    <option value="Singapore"> Singapore</option>
+                    <option value="Los Angeles"> Los Angeles</option>
+                    <option value="Greece"> Greece</option>
+                    </select>
+                    
+                    <br />
+                    <h2>Dietary Restrictions</h2>
+                    <br /><input type="checkbox" checked="true" value="Eggs" name ="restrictions" /> Eggs 
+                    <br /><input type="checkbox" checked="true" value="Singapore"name ="restrictions"/> Wheat
+                    <br /><input type="checkbox" checked="true" value="Singapore"name ="restrictions"/> 
+                    Cabbage
+                    <br /><input type="checkbox" checked="true" value="Singapore"name ="restrictions"/> Cheese
+                    <br /><input type="checkbox" checked="true" value="Singapore"name ="restrictions"/> Milk
+                    <br />
+                    <br />
+                    <button>Submit</button>
+                </form>
+                <hr />
+                <h2>Entered information:</h2>
+                <p>Your name: {this.state.firstName+" "+this.state.lastName} </p>
+                <p>Your age: {this.state.age}</p>
+                <p>Your gender: {this.state.gender}</p>
+                <p>Your destination: {this.state.location}</p>
+                <p>
+                    Your dietary restrictions: 
+                    {/* Dietary restrictions here, comma separated */}
+                </p>
+            </main>
+        )
+    }
+}
+
+export default App

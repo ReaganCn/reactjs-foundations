@@ -1,0 +1,690 @@
+/* React*/
+
+/*
+Components - core building blocks for reusable pieces html
+JSX - wrapper around javascript
+styling
+props - how to parse data
+states
+event
+
+Virtual DOM makes react faster than vanilla javascript
+
+
+*/
+
+/* Adding styles in react 
+
+use className instead of class on elements
+You can only assing classes to react/jsx elements, not components
+
+Javascript in JSX- surround it with curly braces
+You can do any javascript with this
+e.g. 
+let firstName = "Reagan"
+let lastName = "Charana"
+
+return ( <h1>My name is {firstName+" "+lastName}</h1>)
+
+Inline styles have to be javascipt objects
+e.g. style ="color: blue" will be style = {{color: blue}}
+inside curly braces are for the JS object and outside curly braces
+re because it is javascipt inside JSX
+You cannot have a property with a dash e.g. background-color, 
+should be backgroundColor(camelCase)
+ 
+You can also place the inline styles in an object
+Normal object manipulation methods apply.
+e.g.
+const styles = {
+	fontSize: red
+
+}
+<h1 style = {styles}>
+
+ 
+*/
+
+
+/* Props
+Instead of using inbuilt html properties e.g. src, href, we can use props
+to modify an element according to its state.
+
+We can allow properties to be modified according to how components react
+
+function MyApp(props){}
+props is an object that has the name properties you passed in 
+
+
+
+*/
+
+/*
+You can use Higher order functions to populate data in React.
+ const fruitData = fruits.map(fruit => <Fruit key = {fruit.id} name={fruit.name}>)
+ accessed by: props.name
+or
+ const fruitData = fruits.map(fruit => <Fruit key = {fruit.id} fruit={fruit} />)
+ accessed by: props.fruit.name
+
+You also have to define key property.
+
+
+rendered by: <div>{fruitData}</div>
+
+
+You can use classes instead of Functions to define components
+class Header extends React.Component {
+	render () {
+
+	return( <h1>Hello</h1>  )
+}
+
+}
+
+
+
+*/
+
+/*
+State needs the constructor method and a super()
+State is an object defined by this.state
+
+constructor () {
+	super()
+	this.state ={
+	
+	answer: "yes"
+}
+}
+
+accessed by: this.state.answer
+//output: yes
+
+- Never modify state directly
+
+To change state you add your own method inside the component class
+e.g. handleClick(){}
+-use the setState method inside because you are not allowed to
+change the state directly: this.setState({count:1})
+- In order to use setState in your new method, you have to bind the new method to the Component Class
+. This is done in the constructor method, right after this.state declaration
+e.g. this.handleClick = this.handleClick.bind(this)
+-the setState method can take an object or a callback returning an
+object e.g. this.setState(prevState =>{return {count: prevState+1} })
+- you cannot use ++ because that will modify the original state
+- prevState is an object of the original state therefore the value can be acccessed by
+prevState.count
+
+call it by onClick={this.handleClick}, add this. because its a method
+
+- to update state of elements in an array of objects
+
+- save the original state to a new variable: let updated = this.state.todos
+- update the variable: updated.completed ? updated.completed = false : updated.completed = true;
+- use setState to update the state: this.setState({ todos: updated}) 
+- remember to use the id to find the element
+	e.g. let updated = this.state.todos.map(item => {
+            id===item.id ? item.completed ? item.completed = false : item.completed = true
+            : item.completed = item.completed
+            return item})
+        
+                
+        this.setState({ todos: updated})
+- use event.target.value to update state of input boxes
+
+*/
+
+/* Events
+Similar to normal javascipt event handlers except for the syntax.
+- uses camelCase for the handlers
+e.g.  onClick={handleClick} 
+*/
+
+/* Lifecycle methods
+defined inside component class just like other methods
+
+    componentDidMount() {
+	//for when your component has mounted/born
+        // e.g. GET the data I need to correctly display
+			Example:     componentDidMount() {
+        fetch("https://api.imgflip.com/get_memes")
+            .then(response => response.json())
+            .then(response => {
+                console.log(response.data.memes[0])
+                this.setState({ allMemeImgs: response.data.memes })
+            })
+    }
+    }
+
+    componentDidUpdate() {
+	//for when your component has been updated
+        // e.g. GET the data I need to correctly display
+	//it has to run if only a certain condition has been met. 
+Otherwise react will think it is an infinite loop
+	//mostly used when you don't want code repetition 
+to achieve the same thing 
+
+ 	if(prevState.count !== this.state.count) {
+            const newColor = randomcolor()
+            this.setState({color: newColor})
+        }
+    }
+    
+    componentWillReceiveProps(nextProps) {
+	//nextProps is the new props being received
+	//what to do if a new prop is received 
+        if (nextProps.whatever !== this.props.whatever) {
+            // do something important here
+        }
+	// However it is deprecated
+    }
+    
+    shouldComponentUpdate(nextProps, nextState) {
+        //returns boolean.
+	// receives incoming new props and new state
+	//used to specify when to update a component
+	// return true if want it to update
+        // return false if not
+    }
+    
+    componentWillUnmount() {
+        // teardown or cleanup your code before your component disappears
+        // (E.g. remove event listeners)
+	// what to do when your component has finished rendering/ is gone
+    }
+
+**New**
+    static getDerivedStateFromProps(props, state) {
+        // return the new, updated state based upon the props
+        // https://reactjs.org/docs/react-component.html#static-getderivedstatefromprops
+        // https://reactjs.org/blog/2018/06/07/you-probably-dont-need-derived-state.html
+    }
+    
+    getSnapshotBeforeUpdate() {
+        // create a backup of the current way things are
+        // https://reactjs.org/docs/react-component.html#getsnapshotbeforeupdate
+    }
+
+
+
+*/
+/* Conditional rendering
+
+You can use the tenary operator or the && operator to render 
+something if a condition is met
+
+message.show ? <h1> Show message</h1> : null
+---is the same as:
+message.show &&  <h1> Show message</h1>
+
+&& operator is used when you dont have an else statement
+
+*/
+
+/* Fetching data from API
+Use javascript global function fetch()
+-fetch("http:myapi.com/api")
+-receive the response to a promise .then
+- convert it to json data => data.json()
+-another .then to setState to new data
+- .catch
+
+*/
+
+
+/* Forms in React
+Contolled Forms
+- the input value is saved to a state therefore, every keystroke is monitored
+- there has to be an event handler for onChange on every input that keeps updating the state
+- every keystroke updates the state
+- You can use the same event handle for all input types of text
+e.g.
+        this.state = {
+            firstName: "",
+            lastName: ""
+        }    
+handleChange(event) {
+        this.setState({
+            [event.target.name]: event.target.value
+        })
+    }
+
+- the name of the input has to be the same as the state property
+
+<input type="text" name="firstName" placeholder="First Name" onChange={this.handleChange} />
+
+- state should be the only source of truth. To do this add a value property to the HTML element
+e.g. {this.state.firstName}
+
+- You can use object destructuring to save the event  target value
+e.g.     
+	handleChange(event) {
+        const {name, value} = event.target
+        this.setState({
+            [name]: value
+        })
+    }
+
+- with event.target you can access various properties on the html element
+e.g. value, type, name
+
+- One handle change handler can serve all html form elemnts
+ e.g.     handleChange(event) {
+        const {name, value, type, checked} = event.target
+        type === "checkbox" ? this.setState({ [name]: checked }) : this.setState({ [name]: value })
+    }
+
+Submittin a form, can be done by:
+<form onSubmit={submitHandler}> //html5
+<button onClick = {submitHandler} /> //html5
+
+Uncontrolled Forms
+- <input type="file"> is uncontrolled in React by default
+- therefore like other uncontrolled inputs, you'll use ref={this.fileInput} to access the value
+
+*/
+
+/* Delegate UI and logic to various components
+
+You can have a form UI component(recieves props) and a form logic component
+then pass methods and state to the other form receiving the props
+you can pass them as objects e.g. handleChange={this.handleChange} data={this.state}
+receive with. {props.handleChange} {props.data.firstName}
+
+- Container holds the business Logic, Component holds the UI
+
+*/
+
+/* New Features
+
+You can write your methods as arrow functions
+- with this you dont have to bind the method to the class
+
+
+*/
+/* React Hooks
+- Enables to use state with functions
+useState hook:
+- You have to use React.useState or import React, {useState} from "react"
+- useState returns an array. the value and a function e.g. ["yes",f()]
+- Use array destructuring to access the value e.g. const [answer] = useState("Yes")
+		- value of answer will be yes
+		- with arrays you can use any word you want for answer
+
+
+****Change State*****
+
+- The second element of the useState array is the function used to change state
+- The function works like setState, and it accepts a callback function that has the
+previous state as the parameter
+e.g. const [count, setCount] = useState(0)
+	setCount(prevCount => prevCount + 1)
+
+- If you want to save multiple values as state, you can use an object or simply 
+create another instance of useState with new variables
+
+******Life Cycle Methods****
+
+- use useEffect
+replacement for :
+	- componentDidMount
+	- componentDidUpdate
+	- componentWillUnmount
+
+- allows us to produce side effects for our components
+e.g. Network requests, Manual DOM manipulation, event listeners or timeounts and intervals 
+- You can use multiple useEffect to monitor various variables
+- useEffect has two parameters, a callback function and an array of variables to watch for change
+e.g.  
+
+componentDidUpdate
+useEffect(() => {
+        setColor(randomcolor())
+    }, [count])
+
+-sets a random color every time the count variable changes
+-if the variable is not specified, it will be an infinite loop
+
+componentDidMount
+- for useEffect, use an empty array as the second parameter
+- this will run the code inside use effect once, just when the component
+has loaded and since it does not have a variable to watch it will not run again
+
+componentWillUnmount
+- useEffect returns a function that will be called when the component unmounts
+e.g. return () => { //my clearing logic here}
+*/
+
+--React Fragments--
+
+This can be used to render multiple elements without adding nodes to the DOM.
+Instead of wrapping elements with <div> you can use <React.Fragment> to achieve this purpose.
+e.g.
+<React.Fragment>
+<Child A />
+<Child B />
+</React.Fragment>
+
+you can use empty tags as  a shorter syntax. <></>. Used in cases where you dont need to pass anything e.g. keys
+
+---------Redux----------
+-State Management Framework
+/*
+:store
+The entire state of the application si stored in a :store. This is the single source of truth
+when it comes to application state
+Store - Is a single state object of the entire state of the application. Basically an object which
+holds and manages application state
+Any time a piece of the app or a component wants to update state, it must do so through the Redux :store
+
+---Methods---
+createStore(reducer)- create the Redux store//the reducer function is a required arguement and takes state as an arguement
+e.g. 
+let store = Redux.createStore(reducer)
+getState() - retrieve the current state held in the Redux store
+e.g.
+let currentState = store.getState()
+dispatch() - dispatches actions to the Redux Store. Takes the action returned by the action creator
+e.g. 
+store.dispatch(actionCreator())
+
+subscribe() - Allows you to subscribe listener functions to the store which are called every time 
+an action is dispatched to the store
+e.g.
+let currentState;
+// change code below this line
+const incrementCount = ()=>{
+  let previousState = currentState
+  currentState = store.getState()
+  if(previousState !== currentState){
+    return count++
+  }
+  return count
+
+}
+- This subscriber increments the value of count every time an action is dispatched to the store
+
+Redux Action
+All state updates are triggered by dispatching actions
+action -  A Js Object that contains info about an action event that has occurred.
+	- think of actions as messengers that deliver information about events happening
+in your app to the redux store
+- sometimes an action may carry some data e.g. username after the user logs in
+The :store receives the actions and updates the state accordingly
+actions must carry a type property - specifies which type of action occurred
+e.g.
+let action = {
+  type: 'LOGIN'
+}
+Action creators - Js function that ***returns an action***
+		- Create objects that represent action events
+		- does not have any default arguements
+e.g.
+function actionCreator () {
+  return action
+} //returns {type: 'LOGIN'}
+
+:dispatch method
+dispatch()
+- You use it to dispatch actions(e.g.the above actions) to the Redux Store
+- You can pass the value returned from the Action Creator
+e.g. 
+store.dispatch(actionCreator());
+store.dispatch({ type: 'LOGIN' });
+- The above statements are the same
+
+Reducers
+After an action has been dispatched, the redux store needs the reducer function to
+know how to respond to that action
+-Reducers are responsible for state modifications that take place in response to actions
+Takes two arguements- state, action
+ - returns a new state. Never modify the current state directly
+This is its only purpose
+e.g.
+const defaultState = {
+  login: false
+};
+const reducer = (state = defaultState, action) => {
+  
+  if (action.type === 'LOGIN'){
+    return {login: true}
+  }
+
+  return defaultState
+  
+};
+
+const loginAction = () => {
+  return {
+    type: 'LOGIN'
+  }
+};
+- When the 'LOGIN' action is dispatched the login property changes to true
+
+You can use Switch statements to handle multiple Actions
+e.g.
+const authReducer = (state = defaultState, action) => {
+  switch(action.type){
+    case 'LOGIN':
+      return {authenticated: true}
+      
+    case 'LOGOUT':
+      return {authenticated: false}
+      
+    default:
+      return defaultState
+  }
+};
+
+Action types are always declared as consts
+e.g.
+const LOGIN = 'LOGIN'
+const LOGOUT = 'LOGOUT'
+
+Combining Multiple Reducers
+You can only pass one reducer(root reducer) to the createStore method.
+And there is only one store in the entire application.
+
+Therefore use Redux.combineReducers() to combine all reducers in an object.
+e.g.
+the properties count and auth are not anywhere else in the code
+const rootReducer = Redux.combineReducers({
+  count: counterReducer,
+  auth: authReducer
+})
+
+const store = Redux.createStore(rootReducer)
+
+After combining reducers, in mapStateToProps you will pass the count and auth keys destructured 
+e.g.
+const mapStateToProps = ({count, auth}) => {
+return {
+	state: count   //similar to state.count if you dont destructure and pass state as a parameter
+}
+}
+
+----or you can pass the state normally and return an object with a state property whose value is state.count
+
+- You can send specific data along with actions.
+e.g. 
+{
+type: ADD_NOTE,
+text: "Hello World"
+}
+
+
+Using Middlewares to handle Asynchronous Actions
+
+asynchronous actions include actions like fetching data/API calls
+The asynchronous action returns a function with dispatch as an arguement.
+Then you can use to dispatch any action within the function
+- The rest of the code stays the same
+
+The Redux Thunk Middleware is passed as a second arguement in the createStore method.
+e.g.
+const store = Redux.createStore(
+  asyncDataReducer,
+  Redux.applyMiddleware(ReduxThunk.default)
+
+the asychronous action 
+e.g.
+const handleAsync = () => {			//this is the action creator
+  return function(dispatch) {			//this is the asynchronous action
+    // dispatch request action here
+    dispatch(requestingData())
+    setTimeout(function() {
+      let data = {
+        users: ['Jeff', 'William', 'Alice']
+      }
+    dispatch(receivedData(data))
+    }, 2500);
+  }
+};
+
+
+Arrays Immutability - When working with arrays, you can use the spread operator for immutability
+Object Immutability - Use Object.assign
+Takes two arguements. The firstone an empty object, and the second one the old object
+e.g.
+let newState = Object.assign({}, state)
+newState.status = 'online'
+
+
+
+*/
+
+/* -----------React and Redux-----------
+Again the entire app relies on one store, in which React components subscribe to
+Actions are dispatched directly from React components
+react-redux package enable react components to interact with the redux store and dispatch its actions
+
+Connect Redux to React
+- There is Provider and connect API
+
+---Provider
+Provider is like a wrapper component that wraps the React app.
+- Has Two props: store and child components of the app
+e.g.
+const Provider = ReactRedux.Provider;
+
+class AppWrapper extends React.Component {
+  
+  render () {
+    return (
+      <Provider store={store}>  //Here is the Provider component with the store prop
+        <DisplayMessages />
+      </Provider>
+  )}
+};
+
+Map state to props
+- To Map the state to props, create a function that takes state as an arguement and returns an object
+that maps the state to specific property names.
+- The property names will be accessed by components via props
+Then the function is passed to store.subscribe()
+e.g.
+const state = [];
+
+const mapStateToProps = (state) =>{
+    return {
+      messages: state    		//here state is mapped to the messages property
+    }
+}
+
+Map dispatch/actions to props
+
+- It is a similar function to the one above, except that it takes dispatch as an arguement,
+but returns an object with a property whose value is an anonymous function, that takes 
+the parameters of the action creators as its parameters. 
+- The anonymous function then dispatches the action creator with its parameter(same from the anomymous function)
+e.g.
+
+const addMessage = (message) => {		//this is the action creator
+  return {
+    type: 'ADD',
+    message: message
+  }
+};
+
+const mapDispatchToProps = (dispatch) => {
+return {
+submitNewMessage: (message) => {
+dispatch(addMessage(message))
+}
+}
+
+}
+
+---Connect
+
+Connect is a method that you use to map state and dispatch to the props 
+of the React component
+It takes two optional arguement: mapStateToProps, mapDispatch to props. You can
+pass null if you want to omit either of the arguements
+Then it immediately calls the result with the component
+e.g.
+const connect = ReactRedux.connect;
+
+const ConnectedComponent = 
+connect(mapStateToProps, mapDispatchToProps)(Presentational) 
+
+- Then include the connect result in the App Wrapper(Provider)
+e.g.
+<Provider store={store}>
+<ConnectedComponent />
+</Provider>
+- That's it. Done
+
+- To access the states and dispatch in react, you'll use props.thepropertyoftheobjecreturnedinMapping
+e.g.
+const mapStateToProps = (state) => {
+  return {messages: state}
+};
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    submitNewMessage: (message) => {
+      dispatch(addMessage(message))
+    }
+  }
+};
+
+~~~~~You'll access the above properties as below:
+
+ -this.props.messages
+ -this.props.submitNewMessage(this.state.input) || this.props.submitNewMessage("Hello World")
+
+----Now the messages are handled by the redux store and the input is handled by the Component in the local state  
+
+*/
+
+/* ------Rendering to different divs other than the main root
+
+Method 1: Use multiple providers and pass the same instance of store.
+e.g.
+
+ReactDOM.render (<Provider store = {store}> <MainContent /> </Provider>, document.getElementById('root'))
+ReactDOM.render (<Provider store = {store}> <Notifications /></Provider>, document.getElementById('root'))
+
+You can use this when the component is not a child of the main component.
+
+Method 2: Use React Portals
+
+ReactDOM.createPortal (componentToRender, whereToRender)
+
+e.g.
+
+From the return statement of the parent element, you can use:
+
+return ReactDOM.createPortal(<WatchLater />, document.getElementById('watchlater'))
+
+or
+
+const WatchLaterComponent = (props) => {
+const [videos, setVideos] =  useState ([]);
+
+return return ReactDOM.createPortal( props.videos , document.getElementById('watchlater'))
+} 
+
+*/
